@@ -1,6 +1,8 @@
 import re
 import requests
+import subprocess
 
+# Secure way: subprocess.Popen([arg1,arg2,arg3,input])
 
 class Url:
     """
@@ -16,6 +18,32 @@ class Url:
     """
     def __init__(self,url):
         self.url = url
+        # Pending to check if it's an url by a regular expression.
+
+    def scan_nuclei:
+        """
+        Scan a url using nuclei form Project Discovery
+
+        Official url: https://github.com/projectdiscovery/nuclei
+        """
+        pass
+
+    def scan_httpx:
+        """
+        Scan a single url using httpx from Project discovery
+
+        Official url: https://github.com/projectdiscovery/httpx
+        """
+        pass
+
+    def scan_katana:
+        pass
+
+    def scan_waybackurls:
+        pass
+
+    def scan_dirsearch:
+        pass
 
 
 class Host:
@@ -29,6 +57,7 @@ class Host:
     """
     def __init__(self, host):
         self.host = host
+        # Pending to check if it's an host by a regular expression.
 
 
 class UrlList:
