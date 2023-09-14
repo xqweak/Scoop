@@ -137,6 +137,17 @@ class Host:
         output = output.decode('utf-8').split("\n")
         return output
 
+    def scan_httprobe(self):
+        """
+        Resolve dns into http or https
+
+        Official url: https://github.com/tomnomnom/httprobe 
+        """
+        # Need to find a way to pipe, this command is necesary for the rest of
+        # the bot.
+        pass
+
+
 
 class UrlList:
     """Class UrlList that involves a list of objects from the class URL."""
