@@ -42,8 +42,9 @@ class Url:
         """
         print(f'scanning {self.url} with httpx:')
         # Default get title, redirection and status code
-        args = ['httpx-pd', '-sc' , '-fr' , '-title' , self.url] 
+        args = ['httpx-pd', '-sc' , '-fr' , '-title', '-u', self.url , "-nc" , "-silent"] 
         output = subprocess.check_output(args)
+        output = output.decode('utf-8')
         return output
 
     def scan_katana(self):
@@ -109,6 +110,6 @@ class HostList:
 
 
 
-url = Url("http://localhost")
-lol =url.scan_nuclei()
+url = Url("https://www.urosario.edu.co")
+lol =url.scan_httpx()
 print(lol)
