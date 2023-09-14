@@ -131,7 +131,11 @@ class Host:
 
         Official url: https://github.com/projectdiscovery/nuclei
         """
-        pass
+        print(f'scanning {self.host} with nuclei and default templates:')
+        args = ['nuclei', '-nc', '-u' , self.host]
+        output = subprocess.check_output(args)
+        output = output.decode('utf-8').split("\n")
+        return output
 
 
 class UrlList:
@@ -145,6 +149,6 @@ class HostList:
 
 
 
-host = Host("gestion.bextsa.com")
-lol =host.scan_naabu()
+host = Host("")
+lol =host.scan_nuclei()
 print(lol)
