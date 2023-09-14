@@ -18,32 +18,70 @@ class Url:
     """
     def __init__(self,url):
         self.url = url
+        self.url_pattern = r"https?://[^\s/$.?#].[^\s]*"
         # Pending to check if it's an url by a regular expression.
 
-    def scan_nuclei:
+    def scan_nuclei(self):
         """
         Scan a url using nuclei form Project Discovery
 
         Official url: https://github.com/projectdiscovery/nuclei
         """
-        pass
+        print(f'scanning {self.url} with nuclei and default templates:')
+        args = ['nuclei', '-nc', '-u' , self.url]
+        output = subprocess.check_output(args)
+        output = output.decode('utf-8').split("\n")
+        return output
 
-    def scan_httpx:
+
+    def scan_httpx(self):
         """
         Scan a single url using httpx from Project discovery
 
         Official url: https://github.com/projectdiscovery/httpx
         """
-        pass
+        print(f'scanning {self.url} with httpx:')
+        # Default get title, redirection and status code
+        args = ['httpx-pd', '-sc' , '-fr' , '-title' , self.url] 
+        output = subprocess.check_output(args)
+        return output
 
-    def scan_katana:
-        pass
+    def scan_katana(self):
+        """
+        Crawl a single url using katana
 
-    def scan_waybackurls:
-        pass
+        Official url: https://github.com/projectdiscovery/katana
+        """
+        print(f'crawling {self.url} with katana:')
+        args = ['katana', '-u' , self.url]
+        output = subprocess.check_output(args)
+        return output
 
-    def scan_dirsearch:
-        pass
+    def scan_waybackurls(self):
+        """
+        Get urls from waybackmachines using waybackurls.
+
+        Official url: https://github.com/tomnomnom/waybackurls
+        """
+        print(f'collecting past urls from {self.url} from wayback...') 
+        args = ["waybackurls" , self.urls]
+        output = subprocess.check_output(args)
+        return output
+
+    def scan_dirsearch(self):
+        """
+        Bruteforce urls using dirsearch and default wordlist.
+
+        Official url: https://github.com/maurosoria/dirsearch
+        """
+        # Run dirsearch and capture the output as bytes
+        command = ["dirsearch", "-u", self.url, "--format=plain" , "-quiet"]
+        output_bytes = subprocess.check_output(command)
+        # Decode the bytes to a string
+        output_str = output_bytes.decode('utf-8')
+        # Use regex to extract only the discovered URLs from the output
+        discovered_urls = re.findall(self.url_pattern, output_str)
+        return discovered_urls
 
 
 class Host:
@@ -68,3 +106,9 @@ class UrlList:
 class HostList:
     """Class HostList that involves a list of objects from the class Host."""
     pass
+
+
+
+url = Url("http://localhost")
+lol =url.scan_nuclei()
+print(lol)
