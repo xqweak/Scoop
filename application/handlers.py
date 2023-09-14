@@ -118,7 +118,12 @@ class Host:
 
         Official url: https://github.com/projectdiscovery/naabu
         """
-        pass
+        print(f'bruteforcing subdomains for {self.host}')
+        # Not adding any specific ports, i should add more
+        args = ['naabu', '-host' , self.host , '--silent'] 
+        output = subprocess.check_output(args)
+        output = output.decode('utf-8').split('\n')
+        return output
 
     def scan_nuclei(self):
         """
@@ -140,6 +145,6 @@ class HostList:
 
 
 
-host = Host("")
-lol =host.scan_subfinder()
+host = Host("gestion.bextsa.com")
+lol =host.scan_naabu()
 print(lol)
