@@ -66,8 +66,9 @@ class Url:
         Official url: https://github.com/tomnomnom/waybackurls
         """
         print(f'collecting past urls from {self.url} from wayback...') 
-        args = ["waybackurls" , self.urls]
+        args = ["waybackurls" , self.url]
         output = subprocess.check_output(args)
+        output = output.decode('utf-8').split('\n')
         return output
 
     def scan_dirsearch(self):
@@ -111,6 +112,6 @@ class HostList:
 
 
 
-url = Url("http://localhost")
-lol =url.scan_katana()
+url = Url("")
+lol =url.scan_waybackurls()
 print(lol)
