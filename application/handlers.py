@@ -99,6 +99,17 @@ class Host:
     def __init__(self, host):
         self.host = host
         # Pending to check if it's an host by a regular expression.
+        host_pattern = r"^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$"
+
+
+    def scan_subfinder(self):
+        pass
+
+    def scan_naabu(self):
+        pass
+
+    def scan_nuclei(self):
+        pass
 
 
 class UrlList:
