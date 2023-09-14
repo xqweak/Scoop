@@ -33,7 +33,6 @@ class Url:
         output = output.decode('utf-8').split("\n")
         return output
 
-
     def scan_httpx(self):
         """
         Scan a single url using httpx from Project discovery
@@ -98,17 +97,35 @@ class Host:
     """
     def __init__(self, host):
         self.host = host
-        # Pending to check if it's an host by a regular expression.
-        host_pattern = r"^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$"
-
+        self.pattern = r"^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$"
 
     def scan_subfinder(self):
-        pass
+        """
+        Get subdomains from a single hosts using subfinder from Project Discovery.
+
+        Official url: https://github.com/projectdiscovery/subfinder
+        """
+        print(f'finding subdomains for {self.host}')
+        args = ['subfinder', '-d',self.host, '--silent']
+        output = subprocess.check_output(args)
+        output = output.decode('utf-8').split('\n')
+        return output
 
     def scan_naabu(self):
+        """
+        Bruteforce open ports from a single hosts using Naabu from Project
+        Discovery.
+
+        Official url: https://github.com/projectdiscovery/naabu
+        """
         pass
 
     def scan_nuclei(self):
+        """
+        Scan a host using nuclei form Project Discovery
+
+        Official url: https://github.com/projectdiscovery/nuclei
+        """
         pass
 
 
@@ -123,6 +140,6 @@ class HostList:
 
 
 
-url = Url("")
-lol =url.scan_waybackurls()
+host = Host("")
+lol =host.scan_subfinder()
 print(lol)
