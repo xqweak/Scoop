@@ -56,6 +56,7 @@ class Url:
         print(f'crawling {self.url} with katana:')
         args = ['katana', '-u' , self.url]
         output = subprocess.check_output(args)
+        output = output.decode('utf-8').split('\n')
         return output
 
     def scan_waybackurls(self):
@@ -110,6 +111,6 @@ class HostList:
 
 
 
-url = Url("https://www.urosario.edu.co")
-lol =url.scan_httpx()
+url = Url("http://localhost")
+lol =url.scan_katana()
 print(lol)
