@@ -42,7 +42,6 @@ class Url:
     def __init__(self,url):
         self.url = url
         self.url_pattern = r"https?://[^\s/$.?#].[^\s]*"
-        # Pending to check if it's an url by a regular expression.
 
     def scan_nuclei(self):
         """
@@ -301,8 +300,10 @@ class HostList:
 
 class NucleiScanOutput:
     """Class for understanding nuclei scans"""
-    pass
+    def __init__(self, output):
+        self.output = output # I'll find a way to parse this output'
 
 class HttpxOutput:
     """Class for understanding httpx scans"""
-    pass
+    def __init__(self, output):
+        self.output = output # I'll find a way to parse this output and export it.
