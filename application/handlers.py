@@ -155,7 +155,7 @@ class Host:
         Official url: https://github.com/projectdiscovery/nuclei
         """
         print(f'scanning {self.host} with nuclei and default templates:')
-        args = ['nuclei', '-nc', '-u' , self.host]
+        args = ['nuclei', '-nc', '-u' , self.host , '--silent']
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split("\n")
         return output
@@ -166,6 +166,7 @@ class Host:
 
         Official url: https://github.com/tomnomnom/httprobe 
         """
+        print(f'scanning with httprobe for {self.host}')
         echo_output = subprocess.check_output(['echo', self.host]).decode('utf-8')
         output = subprocess.check_output(['httprobe'] , input=echo_output,
                                          universal_newlines=True,
@@ -248,11 +249,8 @@ class HostList:
         """
         outs = []
         for i in self.hosts:
-            if(len(out) <= 1):
-                outs.append(i)
-            else:
-                out = i.scan_subfinder()
-                outs.extend(out)
+            out = i.scan_subfinder()
+            outs.extend(out)
         return outs
 
     def scan_naabu(self):
@@ -266,7 +264,6 @@ class HostList:
             outs.extend(out)
         return outs
 
-
     def scan_nuclei(self):
         """
         Scan a set of hosts with Hosts's nuclei_scan method and return a list
@@ -278,10 +275,10 @@ class HostList:
             outs.extend(out)
         return outs
 
-
     def scan_httprobe(self):
         """
-        Search for valid urls using Host's scan_httprobe method. Return a list of valid urls.
+        Search for valid urls using Host's scan_httprobe method. Return a list
+        of valid urls.
         """
         outs = []
         for i in self.hosts:
