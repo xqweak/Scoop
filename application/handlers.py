@@ -166,11 +166,12 @@ class Host:
 
         Official url: https://github.com/tomnomnom/httprobe 
         """
-        # Need to find a way to pipe, this command is necesary for the rest of
-        # the bot.
-        pass
-
-
+        echo_output = subprocess.check_output(['echo', self.host]).decode('utf-8')
+        output = subprocess.check_output(['httprobe'] , input=echo_output,
+                                         universal_newlines=True,
+                                         stderr=subprocess.STDOUT)
+        output = output.split('\n')
+        return output
 
 class UrlList:
     """Class UrlList that involves a list of objects from the class URL."""
@@ -183,6 +184,6 @@ class HostList:
 
 
 
-host = Host("")
-lol =host.scan_nuclei()
+host = Host("google.com")
+lol =host.scan_httprobe()
 print(lol)
