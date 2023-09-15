@@ -225,10 +225,10 @@ class UrlList:
 
         Return list of NucleiScanOutput objects.
         """
-        outs = []
+        out = []
         for i in self.urls:
-            out = i.scan_nuclei()
-            outs.extend(out)
+            nu_scan = i.scan_nuclei()
+            out.append(nu_scan)
         return outs
 
     def scan_httpx(self):
@@ -240,20 +240,24 @@ class UrlList:
         """
         outs = []
         for i in self.urls:
-            out = i.scan_httpx().replace("\n","")
-            outs.append(out)
+            httpx_scan = i.scan_httpx()
+            outs.append(httpx_scan)
         return outs
 
     def scan_katana(self):
         """
         Crawls a set of urls with Url's scan_katana method and return a list
         with all the crawled urls..
+
+        Return a list of crawled domains as UrlList.
         """
         outs = []
         for i in self.urls:
-            out = i.scan_katana()
-            outs.extend(out)
-        return outs
+            urls = [i.url for i in i.scan_katana().urls]
+            outs.extend(urls)
+        text = "\n".join(outs)
+        url_list = UrlList(text) # Pending to check
+        return url_list
 
     def scan_waybackurls(self):
         """
@@ -262,9 +266,11 @@ class UrlList:
         """
         outs = []
         for i in self.urls:
-            out = i.scan_waybackurls()
-            outs.extend(out)
-        return outs
+            urls = [i.url for i in i.scan_waybackurls().urls]
+            outs.extend(urls)
+        text = "\n".join(outs)
+        url_list = UrlList(text)
+        return url_list
 
     def scan_dirsearch(self):
         """
@@ -274,9 +280,11 @@ class UrlList:
         """
         outs = []
         for i in self.urls:
-            out = i.scan_dirsearch()
-            outs.extend(out)
-        return outs
+            urls = [i.url for i in i.scan_dirsearch().urls]
+            outs.extend(urls)
+        text = '\n'.join(outs)
+        url_list = UrlList(text)
+        return url_list
 
 class HostList:
     """Class HostList that involves a list of objects from the class Host."""
@@ -334,18 +342,10 @@ class HostList:
 class NucleiScanOutput:
     """Class for understanding nuclei scans"""
     def __init__(self, output):
-        self.output = output # I'll find a way to parse this output'
+        self.output = output # I'll find a way to parse this output
+
 
 class HttpxOutput:
     """Class for understanding httpx scans"""
     def __init__(self, output):
-        self.output = output # I'll find a way to parse this output and export it.
-
-
-urls = """
-http://localhost
-http://localhost
-"""
-lista = UrlList(urls)
-katana = lista.scan_katana()
-print(katana)
+        self.output = output # I'll find a way to parse this output.
