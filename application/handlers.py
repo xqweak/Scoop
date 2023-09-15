@@ -79,7 +79,9 @@ class Url:
         args = ['katana', '-u' , self.url]
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split('\n')
-        return output
+        text = "\n".join(output)
+        url_list = UrlList(text)
+        return url_list
 
     def scan_waybackurls(self):
         """
@@ -91,7 +93,9 @@ class Url:
         args = ["waybackurls" , self.url]
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split('\n')
-        return output
+        text = "\n".join(output)
+        url_list = UrlList(text)
+        return url_list
 
     def scan_dirsearch(self):
         """
@@ -106,7 +110,9 @@ class Url:
         output_str = output_bytes.decode('utf-8')
         # Use regex to extract only the discovered URLs from the output
         discovered_urls = re.findall(self.url_pattern, output_str)
-        return discovered_urls
+        text = "\n".join(discovered_urls)
+        url_list = UrlList(text)
+        return url_list
 
 
 class Host:
@@ -132,7 +138,9 @@ class Host:
         args = ['subfinder', '-d',self.host, '--silent']
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split('\n')
-        return output
+        text = "\n".join(output)
+        host_list = HostList(text)
+        return host_list
 
     def scan_naabu(self):
         """
@@ -146,7 +154,9 @@ class Host:
         args = ['naabu', '-host' , self.host , '--silent'] 
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split('\n')
-        return output
+        text = "\n".join(output)
+        host_list = HostList(text)
+        return host_list
 
     def scan_nuclei(self):
         """
@@ -287,3 +297,12 @@ class HostList:
         text  = "\n".join(outs)
         url_list = UrlList(text)
         return url_list
+
+
+class NucleiScanOutput:
+    """Class for understanding nuclei scans"""
+    pass
+
+class HttpxOutput:
+    """Class for understanding httpx scans"""
+    pass
