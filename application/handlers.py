@@ -32,12 +32,11 @@ class Url:
     Handling Urls, Project Discovery's suite has tools that works for urls but
     doent work for hosts.
 
-    1. Nuclei -> Returns scanfile
+    1. Nuclei -> Return scanfile
     2. Httpx -> Return txt info
-    3. Katana -> Returns URLlist
-    4. WaybackUrls -> Returns urlList (some that does not exists and needs to
-    be checked)
-    5. Dirsearch -> Returns a urlList 
+    3. Katana -> Return URLlist
+    4. WaybackUrls -> Return urlList
+    5. Dirsearch -> Return a urlList 
     """
     def __init__(self,url):
         self.url = url
@@ -48,34 +47,42 @@ class Url:
         Scan a url using nuclei form Project Discovery
 
         Official url: https://github.com/projectdiscovery/nuclei
+
+        Return a NucleiScan object.
         """
         print(f'scanning {self.url} with nuclei and default templates:')
         args = ['nuclei', '-nc', '-u' , self.url, '--silent']
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split("\n")
-        return output
+        nuclei_scan = NucleiScanOutput(output)
+        return nuclei_scan
 
     def scan_httpx(self):
         """
         Scan a single url using httpx from Project discovery
 
         Official url: https://github.com/projectdiscovery/httpx
+
+        Return an HttpxOutput object.
         """
         print(f'scanning {self.url} with httpx:')
         # Default get title, redirection and status code
         args = ['httpx-pd', '-sc' , '-fr' , '-title', '-u', self.url , "-nc" , "-silent"] 
         output = subprocess.check_output(args)
         output = output.decode('utf-8')
-        return output
+        httpx_scan = httpx_scan(output)
+        return httpx_scan
 
     def scan_katana(self):
         """
         Crawl a single url using katana
 
         Official url: https://github.com/projectdiscovery/katana
+
+        Return a UrlList object.
         """
         print(f'crawling {self.url} with katana:')
-        args = ['katana', '-u' , self.url]
+        args = ['katana', '-u' , self.url , '-silent']
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split('\n')
         text = "\n".join(output)
@@ -87,6 +94,8 @@ class Url:
         Get urls from waybackmachines using waybackurls.
 
         Official url: https://github.com/tomnomnom/waybackurls
+
+        Return a UrlList object.
         """
         print(f'collecting past urls from {self.url} from wayback...') 
         args = ["waybackurls" , self.url]
@@ -101,6 +110,8 @@ class Url:
         Bruteforce urls using dirsearch and default wordlist.
 
         Official url: https://github.com/maurosoria/dirsearch
+
+        Return a UrlList object.
         """
         # Run dirsearch and capture the output as bytes
         command = ["dirsearch", "-u", self.url, "--format=plain" , "-quiet"]
@@ -113,15 +124,20 @@ class Url:
         url_list = UrlList(text)
         return url_list
 
+    def __str__(self):
+        """Print url"""
+        return self.url
+
 
 class Host:
     """
     Handling Hosts, Project Discovery's suite has tools that works for hosts
     but doent work for urls.
 
-    1. Subfinder -> Returns HostList
-    2. Naabu -> Returns HostLists
-    3. Nuclei -> Returns scanfile
+    1. Subfinder -> Return HostList
+    2. Naabu -> Return HostLists
+    3. Nuclei -> Return scanfile
+    4. Httprobe -> Return httpscan_object
     """
     def __init__(self, host):
         self.host = host
@@ -132,6 +148,8 @@ class Host:
         Get subdomains from a single hosts using subfinder from Project Discovery.
 
         Official url: https://github.com/projectdiscovery/subfinder
+
+        Returns a HostList object.
         """
         print(f'finding subdomains for {self.host}')
         args = ['subfinder', '-d',self.host, '--silent']
@@ -147,6 +165,8 @@ class Host:
         Discovery.
 
         Official url: https://github.com/projectdiscovery/naabu
+
+        returns a HostList object.
         """
         print(f'bruteforcing subdomains for {self.host}')
         # Not adding any specific ports, i should add more
@@ -162,18 +182,23 @@ class Host:
         Scan a host using nuclei form Project Discovery
 
         Official url: https://github.com/projectdiscovery/nuclei
+
+        Returns a nuclei scan object.
         """
         print(f'scanning {self.host} with nuclei and default templates:')
         args = ['nuclei', '-nc', '-u' , self.host , '--silent']
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split("\n")
-        return output
+        nuclei_scan = NucleiScanOutput(output)
+        return nuclei_scan
 
     def scan_httprobe(self):
         """
         Resolve dns into http or https
 
         Official url: https://github.com/tomnomnom/httprobe 
+
+        Returns List of urls object.
         """
         print(f'scanning with httprobe for {self.host}')
         echo_output = subprocess.check_output(['echo', self.host]).decode('utf-8')
@@ -181,7 +206,11 @@ class Host:
                                          universal_newlines=True,
                                          stderr=subprocess.STDOUT)
         output = output.split('\n')
-        return output
+        url_list = UrlList(output)
+        return url_list
+
+    def __str__(self):
+        return self.host
 
 
 class UrlList:
@@ -193,6 +222,8 @@ class UrlList:
         """
         Scan a set of urls with Url's nuclei_scan method and return a list
         with all the scans
+
+        Return list of NucleiScanOutput objects.
         """
         outs = []
         for i in self.urls:
@@ -204,6 +235,8 @@ class UrlList:
         """
         Scan a set of urls with Url's scan_httpx method and return a list
         with all the outputs.
+
+        Return list of httpx_scan objects.
         """
         outs = []
         for i in self.urls:
@@ -307,3 +340,12 @@ class HttpxOutput:
     """Class for understanding httpx scans"""
     def __init__(self, output):
         self.output = output # I'll find a way to parse this output and export it.
+
+
+urls = """
+http://localhost
+http://localhost
+"""
+lista = UrlList(urls)
+katana = lista.scan_katana()
+print(katana)
