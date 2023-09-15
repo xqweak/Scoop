@@ -205,8 +205,10 @@ class Host:
         output = subprocess.check_output(['httprobe'] , input=echo_output,
                                          universal_newlines=True,
                                          stderr=subprocess.STDOUT)
-        output = output.split('\n')
-        url_list = UrlList(output)
+        # I had to do this crazy stuff
+        urls = output.split("\n")
+        text = "\n".join(urls)
+        url_list = UrlList(text)
         return url_list
 
     def __str__(self):
@@ -263,6 +265,8 @@ class UrlList:
         """
         Searchs for a set of urls in waybackmachine using scan_waybackurls
         method from Url's class. Returns a list of urls from waybackmachine.
+
+        Return a UrlList object.
         """
         outs = []
         for i in self.urls:
@@ -277,6 +281,8 @@ class UrlList:
         Bruteforce a set of urls with dirsearch using default wordlists with
         the method scan_dirsearch from Url's class and return a list of
         bruteforced domains.
+
+        Return a UrlList object.
         """
         outs = []
         for i in self.urls:
@@ -296,28 +302,38 @@ class HostList:
         Search for subdomains for a set of hosts using Host's method
         scan_subfinder that scans for subdomains using subfinder from Project
         Discovery. Returns a list of hosts.
+
+        Return a HostList object.
         """
         outs = []
         for i in self.hosts:
-            out = i.scan_subfinder()
-            outs.extend(out)
-        return outs
+            hosts = [i.host for i in i.scan_subfinder().hosts]
+            outs.extend(hosts)
+        text = '\n'.join(outs)
+        host_list = HostList(text)
+        return host_list
 
     def scan_naabu(self):
         """
         Bruteforce open ports using Host's method scan_naabu, returns a list of
         hosts with opened ports.
+
+        Return a HostList object.
         """
         outs = []
         for i in self.hosts:
-            out = i.scan_naabu()
-            outs.extend(out)
-        return outs
+            hosts = [i.host for i in i.scan_naabu().hosts]
+            outs.extend(hosts)
+        text = '\n'.join(outs)
+        host_list = HostList(text)
+        return host_list
 
     def scan_nuclei(self):
         """
         Scan a set of hosts with Hosts's nuclei_scan method and return a list
         with all the scans
+
+        Return a NucleiScanOutput list.
         """
         outs = []
         for i in self.hosts:
@@ -329,12 +345,15 @@ class HostList:
         """
         Search for valid urls using Host's scan_httprobe method. Return a list
         of valid urls.
+
+        Return a UrlList object.
         """
         outs = []
         for i in self.hosts:
             out = i.scan_httprobe()
-            outs.extend(out)
-        text  = "\n".join(outs)
+            urls = [i.url for i in out.urls]
+            outs.extend(urls)
+        text = "\n".join(outs)
         url_list = UrlList(text)
         return url_list
 
@@ -349,3 +368,12 @@ class HttpxOutput:
     """Class for understanding httpx scans"""
     def __init__(self, output):
         self.output = output # I'll find a way to parse this output.
+
+
+hosts = """
+bextsa.com
+urosario.edu.co
+"""
+subfinder = HostList(hosts)
+lol = subfinder.scan_httprobe()
+print([i.url for i in lol.urls])
