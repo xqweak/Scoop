@@ -173,6 +173,7 @@ class Host:
         output = output.split('\n')
         return output
 
+
 class UrlList:
     """Class UrlList that involves a list of objects from the class URL."""
     pass
@@ -181,9 +182,3 @@ class UrlList:
 class HostList:
     """Class HostList that involves a list of objects from the class Host."""
     pass
-
-
-
-host = Host("google.com")
-lol =host.scan_httprobe()
-print(lol)
