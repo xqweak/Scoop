@@ -238,4 +238,55 @@ class UrlList:
 class HostList:
     """Class HostList that involves a list of objects from the class Host."""
     def __init__(self, host_txt):
-        self.hosts = [Host(i) for i in host_txt.split('\n')]
+        self.hosts = [Host(i) for i in host_txt.split('\n') if i != ""]
+
+    def scan_subfinder(self):
+        """
+        Search for subdomains for a set of hosts using Host's method
+        scan_subfinder that scans for subdomains using subfinder from Project
+        Discovery. Returns a list of hosts.
+        """
+        outs = []
+        for i in self.hosts:
+            if(len(out) <= 1):
+                outs.append(i)
+            else:
+                out = i.scan_subfinder()
+                outs.extend(out)
+        return outs
+
+    def scan_naabu(self):
+        """
+        Bruteforce open ports using Host's method scan_naabu, returns a list of
+        hosts with opened ports.
+        """
+        outs = []
+        for i in self.hosts:
+            out = i.scan_naabu()
+            outs.extend(out)
+        return outs
+
+
+    def scan_nuclei(self):
+        """
+        Scan a set of hosts with Hosts's nuclei_scan method and return a list
+        with all the scans
+        """
+        outs = []
+        for i in self.hosts:
+            out = i.scan_nuclei()
+            outs.extend(out)
+        return outs
+
+
+    def scan_httprobe(self):
+        """
+        Search for valid urls using Host's scan_httprobe method. Return a list of valid urls.
+        """
+        outs = []
+        for i in self.hosts:
+            out = i.scan_httprobe()
+            outs.extend(out)
+        text  = "\n".join(outs)
+        url_list = UrlList(text)
+        return url_list
