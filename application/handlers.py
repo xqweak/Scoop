@@ -51,7 +51,7 @@ class Url:
         Official url: https://github.com/projectdiscovery/nuclei
         """
         print(f'scanning {self.url} with nuclei and default templates:')
-        args = ['nuclei', '-nc', '-u' , self.url]
+        args = ['nuclei', '-nc', '-u' , self.url, '--silent']
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split("\n")
         return output
@@ -103,6 +103,7 @@ class Url:
         command = ["dirsearch", "-u", self.url, "--format=plain" , "-quiet"]
         output_bytes = subprocess.check_output(command)
         # Decode the bytes to a string output_str = output_bytes.decode('utf-8')
+        output_str = output_bytes.decode('utf-8')
         # Use regex to extract only the discovered URLs from the output
         discovered_urls = re.findall(self.url_pattern, output_str)
         return discovered_urls
@@ -176,7 +177,7 @@ class Host:
 class UrlList:
     """Class UrlList that involves a list of objects from the class URL."""
     def __init__(self, url_txt):
-        self.urls = [Url(i) for i in url_txt.split('\n')]
+        self.urls = [Url(i) for i in url_txt.split('\n') if i != ""]
 
     def scan_nuclei(self):
         """
@@ -196,8 +197,8 @@ class UrlList:
         """
         outs = []
         for i in self.urls:
-            out = i.scan_httpx()
-            outs.extend(out)
+            out = i.scan_httpx().replace("\n","")
+            outs.append(out)
         return outs
 
     def scan_katana(self):
