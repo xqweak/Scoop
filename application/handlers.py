@@ -102,8 +102,7 @@ class Url:
         # Run dirsearch and capture the output as bytes
         command = ["dirsearch", "-u", self.url, "--format=plain" , "-quiet"]
         output_bytes = subprocess.check_output(command)
-        # Decode the bytes to a string
-        output_str = output_bytes.decode('utf-8')
+        # Decode the bytes to a string output_str = output_bytes.decode('utf-8')
         # Use regex to extract only the discovered URLs from the output
         discovered_urls = re.findall(self.url_pattern, output_str)
         return discovered_urls
@@ -176,9 +175,66 @@ class Host:
 
 class UrlList:
     """Class UrlList that involves a list of objects from the class URL."""
-    pass
+    def __init__(self, url_txt):
+        self.urls = [Url(i) for i in url_txt.split('\n')]
 
+    def scan_nuclei(self):
+        """
+        Scan a set of urls with Url's nuclei_scan method and return a list
+        with all the scans
+        """
+        outs = []
+        for i in self.urls:
+            out = i.scan_nuclei()
+            outs.extend(out)
+        return outs
+
+    def scan_httpx(self):
+        """
+        Scan a set of urls with Url's scan_httpx method and return a list
+        with all the outputs.
+        """
+        outs = []
+        for i in self.urls:
+            out = i.scan_httpx()
+            outs.extend(out)
+        return outs
+
+    def scan_katana(self):
+        """
+        Crawls a set of urls with Url's scan_katana method and return a list
+        with all the crawled urls..
+        """
+        outs = []
+        for i in self.urls:
+            out = i.scan_katana()
+            outs.extend(out)
+        return outs
+
+    def scan_waybackurls(self):
+        """
+        Searchs for a set of urls in waybackmachine using scan_waybackurls
+        method from Url's class. Returns a list of urls from waybackmachine.
+        """
+        outs = []
+        for i in self.urls:
+            out = i.scan_waybackurls()
+            outs.extend(out)
+        return outs
+
+    def scan_dirsearch(self):
+        """
+        Bruteforce a set of urls with dirsearch using default wordlists with
+        the method scan_dirsearch from Url's class and return a list of
+        bruteforced domains.
+        """
+        outs = []
+        for i in self.urls:
+            out = i.scan_dirsearch()
+            outs.extend(out)
+        return outs
 
 class HostList:
     """Class HostList that involves a list of objects from the class Host."""
-    pass
+    def __init__(self, host_txt):
+        self.hosts = [Host(i) for i in host_txt.split('\n')]
