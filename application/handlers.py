@@ -22,7 +22,6 @@
                The Scoop
 """
 import re
-import requests
 import subprocess
 
 # Secure way: subprocess.Popen([arg1,arg2,arg3,input])
@@ -67,10 +66,10 @@ class Url:
         """
         print(f'scanning {self.url} with httpx:')
         # Default get title, redirection and status code
-        args = ['httpx-pd', '-sc' , '-fr' , '-title', '-u', self.url , "-nc" , "-silent"] 
+        args = ['httpx-pd', '-sc', '-fr', '-title', '-u', self.url, "-nc", "-silent"] 
         output = subprocess.check_output(args)
         output = output.decode('utf-8')
-        httpx_scan = httpx_scan(output)
+        httpx_scan = HttpxOutput(output)
         return httpx_scan
 
     def scan_katana(self):
@@ -368,12 +367,3 @@ class HttpxOutput:
     """Class for understanding httpx scans"""
     def __init__(self, output):
         self.output = output # I'll find a way to parse this output.
-
-
-hosts = """
-bextsa.com
-urosario.edu.co
-"""
-subfinder = HostList(hosts)
-lol = subfinder.scan_httprobe()
-print([i.url for i in lol.urls])
