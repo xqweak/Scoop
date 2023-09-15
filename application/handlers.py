@@ -226,10 +226,10 @@ class UrlList:
 
         Return list of NucleiScanOutput objects.
         """
-        out = []
+        outs = []
         for i in self.urls:
             nu_scan = i.scan_nuclei()
-            out.append(nu_scan)
+            outs.append(nu_scan)
         return outs
 
     def scan_httpx(self):
