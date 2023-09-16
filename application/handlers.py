@@ -219,6 +219,15 @@ class UrlList:
     def __init__(self, url_txt):
         self.urls = [Url(i) for i in url_txt.split('\n') if i != ""]
 
+    def to_txt(self):
+        """Transform the url list in a text file"""
+        txt = "\n".join(self.urls)
+        return txt
+
+    def __str__(self):
+        """Print UrlList as a plain txt"""
+        return "\n".join(self.urls)
+
     def scan_nuclei(self):
         """
         Scan a set of urls with Url's nuclei_scan method and return a list
@@ -295,6 +304,16 @@ class HostList:
     """Class HostList that involves a list of objects from the class Host."""
     def __init__(self, host_txt):
         self.hosts = [Host(i) for i in host_txt.split('\n') if i != ""]
+
+    def to_txt(self):
+        """Transform the host list in a text file"""
+        txt = "\n".join(self.hosts)
+        return txt
+
+        return txt
+    def __str__(self):
+        """Print HostList as a plain txt"""
+        return "\n".join(self.hosts)
 
     def scan_subfinder(self):
         """
