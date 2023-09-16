@@ -169,7 +169,7 @@ class Host:
         """
         print(f'bruteforcing subdomains for {self.host}')
         # Not adding any specific ports, i should add more
-        args = ['naabu', '-host' , self.host , '--silent'] 
+        args = ['naabu', '-host', self.host, '--silent'] 
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split('\n')
         text = "\n".join(output)
