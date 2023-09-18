@@ -381,7 +381,6 @@ class NucleiScanOutput:
     def __init__(self, output):
         self.output = output # I'll find a way to parse this output
 
-
 class HttpxOutput:
     """Class for understanding httpx scans"""
     def __init__(self, output):
