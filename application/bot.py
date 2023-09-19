@@ -27,7 +27,7 @@ async def on_ready():
 # Url Methods:
 
 @bot.command()
-async def scan_httpx(ctx, *args):
+async def httpx(ctx, *args):
     """Scan with httpx for a UrlList using UrlList scan_nuclei method"""
     args = list(args)
     url_txt ="\n".join(args)
@@ -44,7 +44,7 @@ async def scan_httpx(ctx, *args):
 
 
 @bot.command()
-async def scan_katana(ctx, *args):
+async def katana(ctx, *args):
     """Crawl urls for a UrlList using UrlList's scan_katana method"""
     args = list(args)
     url_txt ="\n".join(args)
@@ -60,7 +60,7 @@ async def scan_katana(ctx, *args):
     await ctx.send("Done!")
 
 @bot.command()
-async def scan_wayback(ctx, *args):
+async def wayback(ctx, *args):
     """Search for old urls for a UrlList using UrlList's scan_wayback method"""
     args = list(args)
     url_txt ="\n".join(args)
@@ -76,7 +76,7 @@ async def scan_wayback(ctx, *args):
     await ctx.send("Done!")
 
 @bot.command()
-async def scan_dirsearch(ctx, *args):
+async def dirsearch(ctx, *args):
     """Bruteforce urls for a UrlList using UrlList's scan_dirsearch method"""
     args = list(args)
     url_txt ="\n".join(args)
@@ -94,7 +94,7 @@ async def scan_dirsearch(ctx, *args):
 # Host methods:
 
 @bot.command()
-async def scan_subfinder(ctx, *args):
+async def subfinder(ctx, *args):
     """Scan subdomains for a HostList using HostList scan_subfinder method"""
     args = list(args)
     host_txt ="\n".join(args)
@@ -110,7 +110,7 @@ async def scan_subfinder(ctx, *args):
     await ctx.send("Done!")
 
 @bot.command()
-async def scan_naabu(ctx, *args):
+async def naabu(ctx, *args):
     """Scan subdomains for a HostList using HostList scan_naabu method"""
     args = list(args)
     host_txt ="\n".join(args)
@@ -127,7 +127,7 @@ async def scan_naabu(ctx, *args):
 
 
 @bot.command()
-async def scan_nuclei_full(ctx, *args):
+async def nuclei_full(ctx, *args):
     """
     Scan subdomains for a HostList or  UrlList using HostList scan_nuclei
     method and return EVERY log that nuclei throws.
@@ -147,7 +147,7 @@ async def scan_nuclei_full(ctx, *args):
     await ctx.send(j)
     
 @bot.command()
-async def scan_nuclei(ctx, *args):
+async def nuclei(ctx, *args):
     """
     Scan subdomains for a HostList or  UrlList using HostList scan_nuclei
     method and return ONLY vulnerabilities. 
@@ -167,7 +167,7 @@ async def scan_nuclei(ctx, *args):
     await ctx.send(j)
 
 @bot.command()
-async def scan_httprobe(ctx, *args):
+async def httprobe(ctx, *args):
     """Scan subdomains for a HostList using HostList scan_httprobe method"""
     args = list(args)
     host_txt ="\n".join(args)
