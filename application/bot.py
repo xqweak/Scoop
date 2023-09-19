@@ -126,10 +126,10 @@ async def scan_naabu(ctx, *args):
 
 
 @bot.command()
-async def scan_full_nuclei(ctx, *args):
+async def scan_nuclei_full(ctx, *args):
     """
     Scan subdomains for a HostList or  UrlList using HostList scan_nuclei
-    method
+    method and return EVERY log that nuclei throws.
     """
     args = list(args)
     host_txt ="\n".join(args)
@@ -149,7 +149,7 @@ async def scan_full_nuclei(ctx, *args):
 async def scan_nuclei(ctx, *args):
     """
     Scan subdomains for a HostList or  UrlList using HostList scan_nuclei
-    method
+    method and return ONLY vulnerabilities. 
     """
     args = list(args)
     host_txt ="\n".join(args)
