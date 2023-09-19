@@ -2,5 +2,6 @@ venv/
 application/reports/
 *.pyc
 *.pyo
+*.pdf
 # Dont push the token in a public repo xdxdxd
 application/token.txt
