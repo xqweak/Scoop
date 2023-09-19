@@ -16,7 +16,8 @@ def list_to_markdown(args_list: list):
     return formatted
 
 """Define the bot with default intents"""
-bot = commands.Bot(command_prefix="!", intents=discord.Intents.default())
+intents = discord.Intents.all()
+bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
