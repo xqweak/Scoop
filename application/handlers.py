@@ -221,12 +221,15 @@ class UrlList:
 
     def to_txt(self):
         """Transform the url list in a text file"""
-        txt = "\n".join(self.urls)
+        url_list = [i.url for i in self.urls]
+        txt = "\n".join(url_list)
         return txt
 
     def __str__(self):
         """Print UrlList as a plain txt"""
-        return "\n".join(self.urls)
+        url_list = [i.url for i in self.urls]
+        txt = "\n".join(url_list)
+        return txt
 
     def scan_nuclei(self):
         """
@@ -307,7 +310,8 @@ class HostList:
 
     def to_txt(self):
         """Transform the host list in a text file"""
-        txt = "\n".join(self.hosts)
+        host_list = [i.host for i in self.hosts]
+        txt = "\n".join(host_list)
         return txt
 
         return txt
@@ -356,7 +360,7 @@ class HostList:
         outs = []
         for i in self.hosts:
             out = i.scan_nuclei()
-            outs.extend(out)
+            outs.append(out)
         return outs
 
     def scan_httprobe(self):
