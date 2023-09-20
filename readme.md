@@ -7,3 +7,6 @@
 ###### Pendings:
 1. Program Rate Limits.
 2. Program tasks.
+3. Program SQLMap (for Url)
+4. Program MetaGoofil (for Url)
+5. Program Dalfox (for Url)
