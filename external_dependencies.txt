@@ -1,0 +1,8 @@
+https://github.com/maurosoria/dirsearch
+https://github.com/projectdiscovery/httpx
+https://github.com/projectdiscovery/katana
+https://github.com/projectdiscovery/naabu
+https://github.com/projectdiscovery/nuclei
+https://github.com/projectdiscovery/subfinder
+https://github.com/tomnomnom/httprobe
+https://github.com/tomnomnom/waybackurls
