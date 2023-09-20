@@ -26,7 +26,6 @@ async def on_ready():
 
 # Url Methods:
 
-
 @bot.command()
 async def httpx(ctx, *args):
     """Scan with httpx for a UrlList using UrlList scan_nuclei method"""
@@ -36,6 +35,7 @@ async def httpx(ctx, *args):
         args = args[1:]
         await ctx.send(f'rate limit stablished at {rate_limit} request per second!')
     else:
+        await ctx.send('Rate limit goes to 5000 lol')
         rate_limit = 5000
     url_txt ="\n".join(args)
     url_list = UrlList(url_txt, rate_limit)
@@ -61,6 +61,7 @@ async def katana(ctx, *args):
         await ctx.send(f'rate limit stablished at {rate_limit} request per second!')
     else:
         rate_limit = 150 # Default katana
+        await ctx.send(f'rate limit was not specified so it goes to {rate_limit} as default')
     url_txt ="\n".join(args)
     url_list = UrlList(url_txt, rate_limit)
     pretty_advice = list_to_markdown(args)
@@ -82,7 +83,7 @@ async def wayback(ctx, *args):
     if(args[0].isnumeric()):
         rate_limit = args[0]
         args = args[1:]
-        await ctx.send(f'rate limit stablished at {rate_limit} request per second!')
+        await ctx.send(f'rate limit does not matter here!')
     else:
         rate_limit = 1337 # Does not matter
     url_txt ="\n".join(args)
@@ -109,6 +110,7 @@ async def dirsearch(ctx, *args):
         await ctx.send(f'rate limit stablished at {rate_limit} request per second!')
     else:
         rate_limit = 5000 # Super fast if no option
+        await ctx.send(f'rate limit was not specified so it goes at {rate_limit} request per second if its possible!')
     url_txt ="\n".join(args)
     url_list = UrlList(url_txt, rate_limit)
     pretty_advice = list_to_markdown(args)
