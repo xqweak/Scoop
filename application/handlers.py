@@ -37,9 +37,10 @@ class Url:
     4. WaybackUrls -> Return urlList
     5. Dirsearch -> Return a urlList 
     """
-    def __init__(self,url):
+    def __init__(self, url, rate_limit=5000):
         self.url = url
         self.url_pattern = r"https?://[^\s/$.?#].[^\s]*"
+        self.rate_limit = str(rate_limit)
 
     def scan_nuclei(self):
         """
@@ -49,8 +50,8 @@ class Url:
 
         Return a NucleiScan object.
         """
-        print(f'scanning {self.url} with nuclei and default templates:')
-        args = ['nuclei', '-nc', '-u' , self.url, '--silent']
+        print(f'scanning {self.url} with nuclei and default templates and rate limit {self.rate_limit} request per second')
+        args = ['nuclei', '-nc', '-u' , self.url, '--silent', '-rl' , self.rate_limit]
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split("\n")
         nuclei_scan = NucleiScanOutput(output)
@@ -80,8 +81,8 @@ class Url:
 
         Return a UrlList object.
         """
-        print(f'crawling {self.url} with katana:')
-        args = ['katana', '-u' , self.url , '-silent']
+        print(f'crawling {self.url} with katana and rate limit {self.rate_limit} request per second')
+        args = ['katana', '-u' , self.url , '-silent', '-rl', self.rate_limit]
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split('\n')
         text = "\n".join(output)
@@ -113,7 +114,8 @@ class Url:
         Return a UrlList object.
         """
         # Run dirsearch and capture the output as bytes
-        command = ["dirsearch", "-u", self.url, "--format=plain" , "-quiet"]
+        print(f'bruteforcing urls for {self.url} with a max of {self.rate_limit} requests per second ')
+        command = ["dirsearch", "-u", self.url, "--format=plain" , "-quiet", '--max-rate', self.rate_limit]
         output_bytes = subprocess.check_output(command)
         # Decode the bytes to a string output_str = output_bytes.decode('utf-8')
         output_str = output_bytes.decode('utf-8')
@@ -138,8 +140,9 @@ class Host:
     3. Nuclei -> Return scanfile
     4. Httprobe -> Return httpscan_object
     """
-    def __init__(self, host):
+    def __init__(self, host, rate_limit=5000):
         self.host = host
+        self.rate_limit = str(rate_limit)
         self.pattern = r"^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$"
 
     def scan_subfinder(self):
@@ -167,9 +170,9 @@ class Host:
 
         returns a HostList object.
         """
-        print(f'bruteforcing subdomains for {self.host}')
+        print(f'bruteforcing ALL subdomains for {self.host} with a max of {self.rate_limit} request per second')
         # Not adding any specific ports, i should add more
-        args = ['naabu', '-host', self.host, '--silent'] 
+        args = ['naabu', '-host', self.host, '--silent', '-tp', 'full' , '-rate', self.rate_limit]
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split('\n')
         text = "\n".join(output)
@@ -185,7 +188,7 @@ class Host:
         Returns a nuclei scan object.
         """
         print(f'scanning {self.host} with nuclei and default templates:')
-        args = ['nuclei', '-nc', '-u' , self.host , '--silent']
+        args = ['nuclei', '-nc', '-u' , self.host, '--silent', '-rl' , self.rate_limit]
         output = subprocess.check_output(args)
         output = output.decode('utf-8').split("\n")
         nuclei_scan = NucleiScanOutput(output)
@@ -216,8 +219,9 @@ class Host:
 
 class UrlList:
     """Class UrlList that involves a list of objects from the class URL."""
-    def __init__(self, url_txt):
-        self.urls = [Url(i) for i in url_txt.split('\n') if i != ""]
+    def __init__(self, url_txt, rate_limit=5000):
+        self.rate_limit = str(rate_limit)
+        self.urls = [Url(i, rate_limit) for i in url_txt.split('\n') if i != ""]
 
     def to_txt(self):
         """Transform the url list in a text file"""
@@ -305,8 +309,9 @@ class UrlList:
 
 class HostList:
     """Class HostList that involves a list of objects from the class Host."""
-    def __init__(self, host_txt):
-        self.hosts = [Host(i) for i in host_txt.split('\n') if i != ""]
+    def __init__(self, host_txt, rate_limit=5000):
+        self.rate_limit = str(rate_limit)
+        self.hosts = [Host(i, self.rate_limit) for i in host_txt.split('\n') if i != ""]
 
     def to_txt(self):
         """Transform the host list in a text file"""
