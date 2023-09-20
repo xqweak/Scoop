@@ -163,7 +163,10 @@ async def nuclei(ctx, *args):
     for i in results:
         for j in i:
             if(j != "" and ("[info]" not in j)):
-                await ctx.send(j)
+                try:
+                    await ctx.send(j)
+                except:
+                    print('no vulns :(')
     await ctx.send(j)
 
 @bot.command()
