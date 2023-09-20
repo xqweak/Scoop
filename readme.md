@@ -6,5 +6,4 @@
 
 ###### Pendings:
 1. Program Rate Limits.
-2. Change handler's functions for async functions.
-3. Program tasks.
+2. Program tasks.
