@@ -29,6 +29,7 @@ async def on_ready():
 @bot.command()
 async def httpx(ctx, *args):
     """Scan with httpx for a UrlList using UrlList scan_nuclei method"""
+    await ctx.send('httpx is broken :(, we will fix it later!!!')
     args = list(args)
     if(args[0].isnumeric()):
         rate_limit = args[0]
