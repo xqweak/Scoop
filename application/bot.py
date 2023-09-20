@@ -31,8 +31,14 @@ async def on_ready():
 async def httpx(ctx, *args):
     """Scan with httpx for a UrlList using UrlList scan_nuclei method"""
     args = list(args)
+    if(args[0].isnumeric()):
+        rate_limit = args[0]
+        args = args[1:]
+        await ctx.send(f'rate limit stablished at {rate_limit} request per second!')
+    else:
+        rate_limit = 5000
     url_txt ="\n".join(args)
-    url_list = UrlList(url_txt)
+    url_list = UrlList(url_txt, rate_limit)
     pretty_advice = list_to_markdown(args)
     await ctx.send(f'Scanning with httpx: \n {pretty_advice} \n## Result: \n\n')
     # Run the blocking function in a separate thread
@@ -49,8 +55,14 @@ async def httpx(ctx, *args):
 async def katana(ctx, *args):
     """Crawl urls for a UrlList using UrlList's scan_katana method"""
     args = list(args)
+    if(args[0].isnumeric()):
+        rate_limit = args[0]
+        args = args[1:]
+        await ctx.send(f'rate limit stablished at {rate_limit} request per second!')
+    else:
+        rate_limit = 150 # Default katana
     url_txt ="\n".join(args)
-    url_list = UrlList(url_txt)
+    url_list = UrlList(url_txt, rate_limit)
     pretty_advice = list_to_markdown(args)
     await ctx.send(f'Crawling with katana: \n {pretty_advice} \n## Result: \n\n')
     # Run the blocking function in a separate thread
@@ -67,8 +79,14 @@ async def katana(ctx, *args):
 async def wayback(ctx, *args):
     """Search for old urls for a UrlList using UrlList's scan_waybackurls method"""
     args = list(args)
+    if(args[0].isnumeric()):
+        rate_limit = args[0]
+        args = args[1:]
+        await ctx.send(f'rate limit stablished at {rate_limit} request per second!')
+    else:
+        rate_limit = 1337 # Does not matter
     url_txt ="\n".join(args)
-    url_list = UrlList(url_txt)
+    url_list = UrlList(url_txt, rate_limit)
     pretty_advice = list_to_markdown(args)
     await ctx.send(f'Searching for old urls in waybackmachines: \n {pretty_advice} \n## Result: \n\n')
     # Run the blocking function in a separate thread
@@ -85,8 +103,14 @@ async def wayback(ctx, *args):
 async def dirsearch(ctx, *args):
     """Bruteforce urls for a UrlList using UrlList's scan_dirsearch method"""
     args = list(args)
+    if(args[0].isnumeric()):
+        rate_limit = args[0]
+        args = args[1:]
+        await ctx.send(f'rate limit stablished at {rate_limit} request per second!')
+    else:
+        rate_limit = 5000 # Super fast if no option
     url_txt ="\n".join(args)
-    url_list = UrlList(url_txt)
+    url_list = UrlList(url_txt, rate_limit)
     pretty_advice = list_to_markdown(args)
     await ctx.send(f'Bruteforcing urls with dirsearch for: \n {pretty_advice} \n## Result: \n\n')
     # Run the blocking function in a separate thread
@@ -105,8 +129,14 @@ async def dirsearch(ctx, *args):
 async def subfinder(ctx, *args):
     """Scan subdomains for a HostList using HostList scan_subfinder method"""
     args = list(args)
+    if(args[0].isnumeric()):
+        rate_limit = args[0]
+        args = args[1:]
+        await ctx.send(f'Does not matter the rate limit')
+    else:
+        rate_limit = 31337 # Elite rate limit lol
     host_txt ="\n".join(args)
-    host_list = HostList(host_txt)
+    host_list = HostList(host_txt, rate_limit)
     pretty_advice = list_to_markdown(args)
     await ctx.send(f'finding subdomains for \n {pretty_advice} \n## Result: \n\n')
     # Run the blocking function in a separate thread
@@ -123,8 +153,15 @@ async def subfinder(ctx, *args):
 async def naabu(ctx, *args):
     """Scan subdomains for a HostList using HostList scan_naabu method"""
     args = list(args)
+    if(args[0].isnumeric()):
+        rate_limit = args[0]
+        args = args[1:]
+        await ctx.send(f'Rate limit goes to {rate_limit} request per second')
+    else:
+        rate_limit = 1000 # Default Naabu
+        await ctx.send(f'Rate limit goes to {rate_limit} req per second because it was not specified in the first arg')
     host_txt ="\n".join(args)
-    host_list = HostList(host_txt)
+    host_list = HostList(host_txt, rate_limit)
     pretty_advice = list_to_markdown(args)
     await ctx.send(f'Scanning with naabu \n {pretty_advice} \n## Result: \n\n')
     # Run the blocking function in a separate thread
@@ -145,8 +182,15 @@ async def nuclei_full(ctx, *args):
     method and return EVERY log that nuclei throws.
     """
     args = list(args)
+    if(args[0].isnumeric()):
+        rate_limit = args[0]
+        args = args[1:]
+        await ctx.send(f'Rate limit goes to {rate_limit} request per second')
+    else:
+        rate_limit = 150 # Default Nuclei
+        await ctx.send(f'Rate limit goes to {rate_limit} req per second because it was not specified in the first arg')
     host_txt ="\n".join(args)
-    host_list = HostList(host_txt)
+    host_list = HostList(host_txt, rate_limit)
     pretty_advice = list_to_markdown(args)
     await ctx.send(f'Scanning with nuclei \n {pretty_advice} \n## Result: \n\n')
     # Run the blocking function in a separate thread
@@ -167,8 +211,15 @@ async def nuclei(ctx, *args):
     method and return ONLY vulnerabilities. 
     """
     args = list(args)
+    if(args[0].isnumeric()):
+        rate_limit = args[0]
+        args = args[1:]
+        await ctx.send(f'Rate limit goes to {rate_limit} request per second')
+    else:
+        rate_limit = 150 # Default Nuclei
+        await ctx.send(f'Rate limit goes to {rate_limit} req per second because it was not specified in the first arg')
     host_txt ="\n".join(args)
-    host_list = HostList(host_txt)
+    host_list = HostList(host_txt, rate_limit)
     pretty_advice = list_to_markdown(args)
     await ctx.send(f'Scanning with nuclei \n {pretty_advice} \n## Result: \n\n')
     # Run the blocking function in a separate thread
